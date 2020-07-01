@@ -27,10 +27,9 @@ class CreateTransactionService {
       throw new AppError('value must be greater than 0');
     }
 
-    if (
-      type === 'outcome' &&
-      value > (await transactionsRepository.getBalance().total)
-    ) {
+    const { total } = await transactionsRepository.getBalance();
+
+    if (type === 'outcome' && value > total) {
       throw new AppError('insufficient funds');
     }
     const createCategory = new CreateCategoryService();
