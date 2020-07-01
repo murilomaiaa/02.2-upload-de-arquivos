@@ -32,7 +32,6 @@ class CreateTransactionService {
     ) {
       throw new AppError('insufficient funds');
     }
-
     // Create an instance of Transaction
     const transaction = await transactionsRepository.create({
       title,
