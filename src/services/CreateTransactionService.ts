@@ -3,19 +3,20 @@ import AppError from '../errors/AppError';
 
 import Transaction from '../models/Transaction';
 import TransactionsRepository from '../repositories/TransactionsRepository';
+import CreateCategoryService from './CreateCategoryService';
 
 interface Request {
   title: string;
   value: number;
   type: 'income' | 'outcome';
-  category_id: string;
+  categoryTitle: string;
 }
 class CreateTransactionService {
   public async execute({
     title,
     value,
     type,
-    category_id,
+    categoryTitle,
   }: Request): Promise<Transaction> {
     const transactionsRepository = getCustomRepository(TransactionsRepository);
     if (type !== 'income' && type !== 'outcome') {
@@ -32,12 +33,14 @@ class CreateTransactionService {
     ) {
       throw new AppError('insufficient funds');
     }
-    // Create an instance of Transaction
+    const createCategory = new CreateCategoryService();
+    const category = await createCategory.execute(categoryTitle);
+
     const transaction = await transactionsRepository.create({
       title,
       type,
       value,
-      category_id,
+      category,
     });
 
     await transactionsRepository.save(transaction);
