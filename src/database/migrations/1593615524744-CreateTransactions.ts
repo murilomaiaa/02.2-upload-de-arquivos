@@ -31,12 +31,12 @@ export default class CreateTransactions1593615524744
             type: 'uuid',
           },
           {
-            name: 'createdAt',
+            name: 'created_at',
             type: 'timestamp',
             default: 'now()',
           },
           {
-            name: 'updatedAt',
+            name: 'updated_at',
             type: 'timestamp',
             default: 'now()',
           },
